@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Edo Culture Login</title>
+</head>
+
+<body style="background:#111;color:white;font-family:Arial;text-align:center;padding-top:80px">
+
+<h2>👑 Edo Culture Login</h2>
+
+<input id="email" placeholder="Email" style="padding:10px;width:80%;max-width:300px"><br><br>
+<input id="password" type="password" placeholder="Password" style="padding:10px;width:80%;max-width:300px"><br><br>
+
+<button onclick="login()" style="padding:10px 25px;background:#00ffcc;border:none;font-weight:bold">Login</button>
+
+<p id="msg"></p>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.login = function(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then(() => {
+    window.location.href = "dashboard.html";
+  })
+  .catch(() => {
+    document.getElementById("msg").innerText = "Login Failed ❌";
+  });
+}
+</script>
+
+</body>
+</html>
