@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>METRO LEADERBOARD</title>
+
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: Arial;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      border: 1px solid gold;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      color: gold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🏆 METRO LEADERBOARD</h1>
+
+  <div id="list">Loading...</div>
+
+  <button onclick="goBack()">Back</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbydM0YVxCmZvH4JHmhDm653RXk_VdeZs",
+      authDomain: "metro-system-d8b99.firebaseapp.com",
+      projectId: "metro-system-d8b99",
+      storageBucket: "metro-system-d8b99.firebasestorage.app",
+      messagingSenderId: "822253846997",
+      appId: "1:822253846997:web:b460524ba1581507637d5c",
+      measurementId: "G-N5NZHTSGQW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const listDiv = document.getElementById("list");
+
+    async function loadUsers() {
+      const q = query(collection(db, "users"), orderBy("points", "desc"));
+      const snap = await getDocs(q);
+
+      listDiv.innerHTML = "";
+
+      snap.forEach((doc) => {
+        let data = doc.data();
+
+        listDiv.innerHTML += `
+          <div class="card">
+            <h3>${data.email}</h3>
+            <p>🔥 Points: ${data.points}</p>
+          </div>
+        `;
+      });
+    }
+
+    loadUsers();
+
+    window.goBack = function () {
+      window.location.href = "metro.html";
+    }
+  </script>
+
+</body>
+</html>

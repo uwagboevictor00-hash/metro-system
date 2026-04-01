@@ -1,0 +1,63 @@
+body {
+  margin: 0;
+  background: black;
+  color: #00ffcc;
+  font-family: Arial;
+  text-align: center;
+}
+
+/* LOGIN */
+.login-box {
+  margin-top: 100px;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+  background: #111;
+  border: 1px solid #00ffcc;
+  color: white;
+}
+
+button {
+  padding: 10px 20px;
+  background: #00ffcc;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* DASHBOARD */
+.container {
+  margin-top: 50px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 85%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffcc33;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00ffcc;
+}
+
+.neon {
+  background: darkred;
+  color: white;
+}

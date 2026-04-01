@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>METRO CHAT SYSTEM</title>
+
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: Arial;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .chatBox {
+      height: 400px;
+      overflow-y: scroll;
+      border: 1px solid gold;
+      margin: 10px;
+      padding: 10px;
+      text-align: left;
+    }
+
+    input {
+      width: 70%;
+      padding: 10px;
+    }
+
+    button {
+      padding: 10px;
+      background: gold;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .msg {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>💬 METRO CHAT</h1>
+
+  <div class="chatBox" id="chatBox"></div>
+
+  <input type="text" id="msgInput" placeholder="Type message...">
+  <button onclick="sendMsg()">Send</button>
+
+  <br><br>
+  <button onclick="goBack()">Back</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbydM0YVxCmZvH4JHmhDm653RXk_VdeZs",
+      authDomain: "metro-system-d8b99.firebaseapp.com",
+      projectId: "metro-system-d8b99",
+      storageBucket: "metro-system-d8b99.firebasestorage.app",
+      messagingSenderId: "822253846997",
+      appId: "1:822253846997:web:b460524ba1581507637d5c",
+      measurementId: "G-N5NZHTSGQW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser;
+
+    const chatBox = document.getElementById("chatBox");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUser = user;
+        loadChat();
+      }
+    });
+
+    function loadChat() {
+      const q = query(collection(db, "messages"), orderBy("time"));
+
+      onSnapshot(q, (snapshot) => {
+        chatBox.innerHTML = "";
+
+        snapshot.forEach((doc) => {
+          let data = doc.data();
+
+          chatBox.innerHTML += `
+            <div class="msg">
+              <b>${data.email}:</b> ${data.text}
+            </div>
+          `;
+        });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    window.sendMsg = async function () {
+      let text = document.getElementById("msgInput").value;
+
+      if (text === "") return;
+
+      await addDoc(collection(db, "messages"), {
+        email: currentUser.email,
+        text: text,
+        time: serverTimestamp()
+      });
+
+      document.getElementById("msgInput").value = "";
+    }
+
+    window.goBack = function () {
+      window.location.href = "metro.html";
+    }
+  </script>
+
+</body>
+</html>
